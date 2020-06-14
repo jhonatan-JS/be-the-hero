@@ -8,9 +8,15 @@ module.exports = {
 
 
         const incidents = await connection('incidents')
+        .join('ongs', 'ongs.id', '=', 'incidents.ong_id')//relacionar dados de duas tabelas
         .limit(5)
         .offset((page -1) * 5)
-        .select('*');
+        .select(['incidents.*', //buscar somente esses campos das ongs
+         'ongs.name', 
+         'ongs.email', 
+         'ongs.whatsapp', 
+         'ongs.city', 
+         'ongs.uf']);
 
         //quantidade de paginas é renderizada pelo cabeçalho da requisição
         response.header('X-Total-Count', count['count(*)']);
